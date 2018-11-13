@@ -1,15 +1,15 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export default class Form extends Component {
-  render() {
-    return (
-      <div>
-          <form onSubmit={this.props.getData}>
-              <input type='text' placeholder='City' name='city'/>
-              <input type='text' placeholder='Country' name='country'/>
-              <button>Get Weather</button>
-          </form>
-      </div>
-    )
-  }
+const Form = props => {
+  return (
+    <div>
+        <form onSubmit={props.getData}>
+            <input type='text' placeholder='City' name='city'/>
+            <input type='text' placeholder='Country' name='country'/>
+            <button>Get Weather</button>
+        </form>
+    </div>
+  )
 }
+
+export default Form;

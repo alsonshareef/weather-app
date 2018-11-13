@@ -32,7 +32,6 @@ export default class App extends Component {
 
     // If a value is given for city and country input, log data and change state props
     if (city && country) {
-      console.log(data);
       this.setState({
         latitude: data.coord.lat,
         longitude: data.coord.lon,
@@ -40,7 +39,8 @@ export default class App extends Component {
         city: data.name,
         country: data.sys.country,
         humidity: data.main.humidity,
-        description: data.weather[0].description
+        description: data.weather[0].description,
+        error: ''
       })
     } else {
       this.setState({
