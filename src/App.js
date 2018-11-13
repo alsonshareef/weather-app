@@ -28,19 +28,25 @@ export default class App extends Component {
     const country = e.target.elements.country.value;
     
     // Filter fetch request URL based on input values and logs response data
-    const data = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${API_KEY}`).then(response => response.json());
-    console.log(data);
+    const data = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${API_KEY}`).then(response => response.json()).catch(console.error);
 
-    // Change initial state props to the response data
-    this.setState({
-      latitude: data.coord.lat,
-      longitude: data.coord.lon,
-      temperature: data.main.temp,
-      city: data.name,
-      country: data.sys.country,
-      humidity: data.main.humidity,
-      description: data.weather[0].description
-    })
+    // If a value is given for city and country input, log data and change state props
+    if (city && country) {
+      console.log(data);
+      this.setState({
+        latitude: data.coord.lat,
+        longitude: data.coord.lon,
+        temperature: data.main.temp,
+        city: data.name,
+        country: data.sys.country,
+        humidity: data.main.humidity,
+        description: data.weather[0].description
+      })
+    } else {
+      this.setState({
+        error: "Please make sure you have filled out form before submitting"
+      })
+    }
   }
 
   render() {
@@ -57,6 +63,7 @@ export default class App extends Component {
           country={this.state.country}
           humidity={this.state.humidity}
           description={this.state.description}
+          error={this.state.error}
         />
       </div>
     )
