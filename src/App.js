@@ -2,22 +2,26 @@ import React, { Component } from 'react';
 import Titles from './components/Titles';
 import Form from './components/Form';
 import Weather from './components/Weather';
-
-const API_KEY = '771a87d97e2ea9428a4f954571bba7bd';
+import {WEATHER_URL} from './constants';
 
 export default class App extends Component {
-  // Initial state
-  state = {
-    latitude: null,
-    longitude: null,
-    coordinates: null,
-    temperature: null,
-    city: null,
-    country: null,
-    humidity: null,
-    description: null,
-    error: null
+  constructor() {
+    super();
+    // Initial state
+    this.state = this.blankState();
   }
+
+  blankState = () => ({
+      latitude: null,
+      longitude: null,
+      coordinates: null,
+      temperature: null,
+      city: null,
+      country: null,
+      humidity: null,
+      description: null,
+      error: null,
+  })
 
   getData = async (e) => {
     // Prevents full page refresh so data successfully appears
@@ -28,11 +32,12 @@ export default class App extends Component {
     const country = e.target.elements.country.value;
     
     // Filter fetch request URL based on input values and logs response data
-    const data = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${API_KEY}`).then(response => response.json()).catch(console.error);
+    const data = await fetch(WEATHER_URL.replace('{1}', city).replace('{2}', country)).then(response => response.json()).catch(console.error);
 
     // If a value is given for city and country input, log data and change state props
     if (city && country) {
       this.setState({
+        ...this.blankState(),
         latitude: data.coord.lat,
         longitude: data.coord.lon,
         temperature: data.main.temp,
@@ -40,10 +45,10 @@ export default class App extends Component {
         country: data.sys.country,
         humidity: data.main.humidity,
         description: data.weather[0].description,
-        error: ''
       })
     } else {
       this.setState({
+        ...this.blankState(),
         error: "Please make sure you have filled out form before submitting"
       })
     }
